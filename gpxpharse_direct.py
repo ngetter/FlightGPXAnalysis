@@ -8,16 +8,16 @@ import gpxpy
 import gpxpy.gpx
 import pandas as pd
 
-gpx_file = open('Move_2016_09_02_15_29_40_Paragliding.gpx', 'r') 
+gpx_file = open('Move_2016_09_02_15_29_40_Paragliding.gpx', 'r')
 gpx = gpxpy.parse(gpx_file)
 vals = []
 points = []
-tmp =0
+tmp = 0
 smooth = 10
 WND = 30
 for track in gpx.tracks:
-    for segment in track.segments:        
-        for point in range(smooth, len(segment.points)):  
+    for segment in track.segments:
+        for point in range(smooth, len(segment.points)):
             tmp = segment.points[point]
             points.append(tmp)
             record =  dict(
@@ -25,14 +25,9 @@ for track in gpx.tracks:
                 angle = tmp.elevation_angle(segment.points[point -smooth]),
             )
             vals.append(record)
-        
+
 dfx = pd.DataFrame(vals)
 mdfx = dfx.rolling(WND).mean()
 
 dfx.plot()
 mdfx.plot()
-
-
-            
-
-

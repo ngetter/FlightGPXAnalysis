@@ -13,16 +13,21 @@ gpx = gpxpy.parse(gpx_file)
 vals = []
 points = []
 tmp = 0
-smooth = 10
+
+# sampling frequency (compare to last sample_span )
+sample_span = 10
+
+# window of sample_spaning after extracting the data
 WND = 30
+
 for track in gpx.tracks:
     for segment in track.segments:
-        for point in range(smooth, len(segment.points)):
+        for point in range(sample_span, len(segment.points)):
             tmp = segment.points[point]
             points.append(tmp)
             record =  dict(
-                speed = tmp.speed_between(segment.points[point -smooth]),
-                angle = tmp.elevation_angle(segment.points[point -smooth]),
+                speed = tmp.speed_between(segment.points[point -sample_span]),
+                angle = tmp.elevation_angle(segment.points[point -sample_span]),
             )
             vals.append(record)
 
